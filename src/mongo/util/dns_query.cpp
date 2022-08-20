@@ -47,7 +47,7 @@
 
 // It is safe to include the implementation "headers" in an anonymous namespace, as the code is
 // meant to live in a single TU -- this one.  Include one of these headers last.
-#define MONGO_UTIL_DNS_QUERY_PLATFORM_INCLUDE_WHITELIST
+#define MONGO_ALLOW_INCLUDE_UTIL_DNS_QUERY_PLATFORM
 #ifdef WIN32
 #include "mongo/util/dns_query_windows-impl.h"
 #elif __ANDROID__
@@ -55,7 +55,7 @@
 #else
 #include "mongo/util/dns_query_posix-impl.h"
 #endif
-#undef MONGO_UTIL_DNS_QUERY_PLATFORM_INCLUDE_WHITELIST
+#undef MONGO_ALLOW_INCLUDE_UTIL_DNS_QUERY_PLATFORM
 
 using std::begin;
 using std::end;
