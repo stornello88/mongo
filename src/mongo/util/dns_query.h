@@ -1,24 +1,23 @@
 /**
- *    Copyright (C) 2018-present MongoDB, Inc.
+ *    Copyright (C) 2017 MongoDB Inc.
  *
  *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the Server Side Public License, version 1,
- *    as published by MongoDB, Inc.
+ *    it under the terms of the GNU Affero General Public License, version 3,
+ *    as published by the Free Software Foundation.
  *
  *    This program is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    Server Side Public License for more details.
+ *    GNU Affero General Public License for more details.
  *
- *    You should have received a copy of the Server Side Public License
- *    along with this program. If not, see
- *    <http://www.mongodb.com/licensing/server-side-public-license>.
+ *    You should have received a copy of the GNU Affero General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *    As a special exception, the copyright holders give permission to link the
  *    code of portions of this program with the OpenSSL library under certain
  *    conditions as described in each individual source file and distribute
  *    linked combinations including the program with the OpenSSL library. You
- *    must comply with the Server Side Public License in all respects for
+ *    must comply with the GNU Affero General Public License in all respects for
  *    all of the code used other than as permitted herein. If you modify file(s)
  *    with this exception, you may extend this exception to your version of the
  *    file(s), but you are not obligated to do so. If you do not wish to do so,
@@ -41,7 +40,6 @@
 #include <boost/noncopyable.hpp>
 
 #include "mongo/util/assert_util.h"
-#include "mongo/util/duration.h"
 
 namespace mongo {
 namespace dns {
@@ -60,10 +58,6 @@ struct SRVHostEntry {
 
     inline auto makeRelopsLens() const {
         return std::tie(host, port);
-    }
-
-    inline std::string toString() const {
-        return std::string{host} + ":" + std::to_string(port);
     }
 
     inline friend std::ostream& operator<<(std::ostream& os, const SRVHostEntry& entry) {
@@ -89,7 +83,7 @@ struct SRVHostEntry {
  * found and `ErrorCodes::DNSProtocolError` as the status value if the DNS lookup fails, for any
  * other reason
  */
-std::vector<std::pair<SRVHostEntry, Seconds>> lookupSRVRecords(const std::string& service);
+std::vector<SRVHostEntry> lookupSRVRecords(const std::string& service);
 
 /**
  * Returns a group of strings containing text from DNS TXT entries for a specified service.
@@ -102,22 +96,18 @@ std::vector<std::string> lookupTXTRecords(const std::string& service);
 /**
  * Returns a group of strings containing text from DNS TXT entries for a specified service.
  * If the lookup fails because the record doesn't exist, an empty vector is returned.
- * THROWS: `DBException` with `ErrorCodes::DNSProtocolError` as the status value if the DNS lookup
+ * THROWS: `DBException` with `ErrorCodes::DNSProtocolError` as th status value if the DNS lookup
  * fails for any other reason.
  */
 std::vector<std::string> getTXTRecords(const std::string& service);
 
 /**
- * Returns a vector of pairs (string, Seconds), where each pair is: a string containing address
- * entries for a specified servie, and the corresponding records time to live for a record.
-
  * Returns a group of strings containing Address entries for a specified service.
-
  * THROWS: `DBException` with `ErrorCodes::DNSHostNotFound` as the status value if the entry is not
  * found and `ErrorCodes::DNSProtocolError` as the status value if the DNS lookup fails, for any
- * other reason.
+ * other reason
  * NOTE: This function mostly exists to provide an easy test of the OS DNS APIs in our test driver.
  */
-std::vector<std::pair<std::string, Seconds>> lookupARecords(const std::string& service);
+std::vector<std::string> lookupARecords(const std::string& service);
 }  // namespace dns
 }  // namespace mongo
