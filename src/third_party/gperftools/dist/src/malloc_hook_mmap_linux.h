@@ -216,11 +216,11 @@ extern "C" void* mremap(void* old_addr, size_t old_size, size_t new_size,
 
 #ifdef HAVE___SBRK
 // libc's version:
-extern "C" void* __sbrk(intptr_t increment);
+extern "C" void* _sbrk(intptr_t increment);
 
 extern "C" void* sbrk(intptr_t increment) __THROW {
   MallocHook::InvokePreSbrkHook(increment);
-  void *result = __sbrk(increment);
+  void *result = _sbrk(increment);
   MallocHook::InvokeSbrkHook(result, increment);
   return result;
 }
