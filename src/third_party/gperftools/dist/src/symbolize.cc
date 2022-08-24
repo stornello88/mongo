@@ -82,14 +82,14 @@ static char* get_pprof_path() {
 // Returns NULL if we're on an OS where we can't get the invocation name.
 // Using a static var is ok because we're not called from a thread.
 static const char* GetProgramInvocationName() {
-#if defined(HAVE_PROGRAM_INVOCATION_NAME)
-#ifdef __UCLIBC__
+#if defined(HAVE_PROGRAM_INVOCATION_NAMEX)
+#ifdef __UCLIBC__X
   extern const char* program_invocation_name; // uclibc provides this
 #else
   extern char* program_invocation_name;  // gcc provides this
 #endif
   return program_invocation_name;
-#elif defined(__MACH__)
+#elif defined(__MACH__X)
   // We don't want to allocate memory for this since we may be
   // calculating it when memory is corrupted.
   static char program_invocation_name[PATH_MAX];
@@ -99,7 +99,7 @@ static const char* GetProgramInvocationName() {
       return NULL;
   }
   return program_invocation_name;
-#elif defined(__FreeBSD__)
+#elif defined(__FreeBSD__X)
   static char program_invocation_name[PATH_MAX];
   size_t len = sizeof(program_invocation_name);
   static const int name[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
